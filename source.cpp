@@ -46,17 +46,20 @@ string parsePath(string path , int length){
 	string firstFolder = "...\\";
 	string fileName="";
 	int i = path.size()-1;
-	while(path[i]!='\\'){//Assuming the input is a valid path to avoid infinity loop
+	//looking for the file name
+	while(i>=0 && path[i]!='\\'){
 		fileName = path[i] + fileName;
 		i--;
 	}
 	i = 3;
-	while(i < path.length() && path[i]!='\\') i++; //looking for the second slash
+	//looking for the second slash
+	while(i < path.length() && path[i]!='\\') i++;
 	string currentFolder = "";
 	string result = drive + firstFolder;
 	bool isFileNameAttached = false;
 	for(int j = i+1;j< path.length();j++){
 		if(path[j] == '\\'){
+			//Checking if the current folder can fit or needs to be compressed
 			if(result.length()+ currentFolder.length()+path.length() - j <= length){
 				result += currentFolder + path.substr(j);
 				isFileNameAttached = true;
@@ -75,10 +78,20 @@ string parsePath(string path , int length){
 int main() {
 	ios::sync_with_stdio(false);
 	string a = "C:\\Users\\Navin\\Documents\\Bar\\foo\\file.txt";
-	// C:\Documents\Newsletters\Summer2018.pdf
-	// C:\...\Summer2018.pdf
-	cout<<a<<" "<<a.size()<<endl;
-	cout<<parsePath(a, 40)<<endl;
+	string sol = parsePath(a, 40);
+	cout<<sol<<" Result size "<< sol.length()<<" Max length 40"<<endl;
+	sol = parsePath(a, 34);
+	cout<<sol<<" Result size "<< sol.length()<<" Max length 34"<<endl;
+	sol = parsePath(a, 28);
+	cout<<sol<<" Result size "<< sol.length()<<" Max length 28"<<endl;
+	sol = parsePath(a, 22);
+	cout<<sol<<" Result size "<< sol.length()<<" Max length 22"<<endl;
+	sol = parsePath(a, 15);
+	cout<<sol<<" Result size "<<sol.length()<<" Max length 15"<<endl;
+	sol = parsePath(a, 18);
+	cout<<sol<<" Result size "<< sol.length()<<" Max length 18"<<endl;
+	sol = parsePath(a, 45);
+	cout<<sol<<" Result size "<< sol.length()<<" Max length 45"<<endl;
 	return 0;
 }
 
